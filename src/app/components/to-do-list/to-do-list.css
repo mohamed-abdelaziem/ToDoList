@@ -1,0 +1,42 @@
+.listOfOptions > * {
+cursor: pointer !important;
+}
+
+
+
+
+
+
+@media screen and (max-width : 576px){
+.parent {
+width: 100% !important;
+padding: 10px;
+}
+
+.listOfOptions {
+gap: 10px !important;
+}
+
+.listOfOptions > * {
+padding: 10px !important;
+}
+
+.task {
+padding: 10px !important;
+flex-wrap: wrap !important;
+gap: 10px !important;
+justify-content: space-between !important;
+align-content: center !important;
+}
+
+
+
+
+
+
+
+
+}
+
+
+
