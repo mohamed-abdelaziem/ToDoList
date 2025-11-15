@@ -56,8 +56,8 @@ this.toastr.success('your task is added success');
 }
 
 // delete task from tasksList
-deleteTasksList(taskId : number):void {
-let indexOfDeletedTask = this.tasksList().findIndex((task)=>task.id == taskId);
+deleteTasksList(taskTitle : string):void {
+let indexOfDeletedTask = this.tasksList().findIndex((task)=>task.title == taskTitle);
 this.tasksList().splice(indexOfDeletedTask , 1);
 this.completeList = signal(this.tasksList().filter((task)=>task.complete == true));
 this.activeList = signal(this.tasksList().filter((task)=>task.active == true));
@@ -67,8 +67,8 @@ this.saveToLocalStorage('tasksList',this.tasksList());
 
 
 // add to compelte
-addToComplete(eventInfo : any,taskId : number){
-let completedTask = this.tasksList().find((task)=>task.id == taskId);
+addToComplete(eventInfo : any,taskTitle : string){
+let completedTask = this.tasksList().find((task)=>task.title == taskTitle);
 let checkElement = eventInfo.target;
 if(completedTask){
 if(checkElement.checked){
@@ -109,9 +109,12 @@ deleteFromComplete(taskTitle : string){
 let deletedTaskFromComplete = this.completeList().findIndex((task)=>task.title == taskTitle);
 let deletedTaskFromCompleteInTasksList = this.tasksList().find((task)=>task.title == taskTitle);
 this.completeList().splice(deletedTaskFromComplete,1);
+this.activeList = signal(this.tasksList().filter((task)=>task.active == true));
 this.saveToLocalStorage('tasksList',this.tasksList());
 if(deletedTaskFromCompleteInTasksList){
 deletedTaskFromCompleteInTasksList.complete = false;
+deletedTaskFromCompleteInTasksList.active = true;
+this.activeList = signal(this.tasksList().filter((task)=>task.active == true));
 this.saveToLocalStorage('tasksList' , this.tasksList());
 }
 
@@ -125,14 +128,17 @@ this.saveToLocalStorage('tasksList' , this.tasksList());
 ngOnInit(): void{
 if(localStorage.getItem("tasksList") !=null){
 let existTasksListInLocalStorage = localStorage.getItem("tasksList");
+this.completeList = signal(this.tasksList().filter((task)=>task.complete == true));
+this.activeList = signal(this.tasksList().filter((task)=>task.active == true));
 this.tasksList = signal( JSON.parse(existTasksListInLocalStorage!!));
 }else {
 this.tasksList = signal([]);
+this.completeList = signal([]);
+this.activeList = signal([]);
 }
 
 
-this.completeList = signal(this.tasksList().filter((task)=>task.complete == true));
-this.activeList = signal(this.tasksList().filter((task)=>task.active == true));
+
 }
 
 
