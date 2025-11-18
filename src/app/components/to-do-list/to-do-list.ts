@@ -85,6 +85,8 @@ this.completeList = signal(this.tasksList().filter((task)=>task.complete == true
 this.saveToLocalStorage('tasksList',this.tasksList());
 }
 return;
+}else {
+return ; 
 }
 
 
@@ -126,11 +128,11 @@ this.saveToLocalStorage('tasksList' , this.tasksList());
 
 
 ngOnInit(): void{
-if(localStorage.getItem("tasksList") !=null){
 let existTasksListInLocalStorage = localStorage.getItem("tasksList");
+if(existTasksListInLocalStorage !==null){
+this.tasksList = signal( JSON.parse(existTasksListInLocalStorage));
 this.completeList = signal(this.tasksList().filter((task)=>task.complete == true));
 this.activeList = signal(this.tasksList().filter((task)=>task.active == true));
-this.tasksList = signal( JSON.parse(existTasksListInLocalStorage!!));
 }else {
 this.tasksList = signal([]);
 this.completeList = signal([]);
